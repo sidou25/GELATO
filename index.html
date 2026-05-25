@@ -333,46 +333,175 @@ footer{background:var(--dark);color:white;text-align:center;padding:20px;font-si
       <div class="admin-topbar-title">⚙️ Gestion des Parfums</div>
       <div class="admin-topbar-sub" id="adminStats">🟢 0 dans le frigo · ⚫ 0 épuisés</div>
     </div>
-    <button class="admin-logout-btn" onclick="logoutAdmin()">🚪 Quitter</button>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <button class="admin-logout-btn" onclick="openChangePw()" style="background:rgba(255,255,255,0.2);color:white;border:1.5px solid rgba(255,255,255,0.5);">🔑 Mot de passe</button>
+      <button class="admin-logout-btn" onclick="logoutAdmin()">🚪 Quitter</button>
+    </div>
   </div>
-  <div class="admin-hint">Activez uniquement les parfums présents dans le frigo · Les autres seront invisibles pour les clients</div>
+  <div class="admin-hint">Activez uniquement les parfums présents dans le frigo · Les clients voient uniquement les disponibles</div>
+  <div style="max-width:620px;margin:0 auto 14px;display:flex;gap:10px;">
+    <button onclick="setAllAvail(true)" style="flex:1;padding:10px;border-radius:14px;border:2px solid #32CD32;background:rgba(50,205,50,0.1);color:#1a7a1a;font-weight:800;font-size:13px;cursor:pointer;font-family:'Nunito',sans-serif;">✅ Tout disponible</button>
+    <button onclick="setAllAvail(false)" style="flex:1;padding:10px;border-radius:14px;border:2px solid #ccc;background:#f5f5f5;color:#888;font-weight:800;font-size:13px;cursor:pointer;font-family:'Nunito',sans-serif;">⚫ Tout épuisé</button>
+  </div>
   <div class="admin-grid" id="adminGrid"></div>
 </div>
+
+<!-- Change password overlay -->
+<div class="admin-pw-overlay" id="changePwOverlay">
+  <div class="admin-pw-box">
+    <div class="lock-icon">🔑</div>
+    <h3>Changer le mot de passe</h3>
+    <p style="font-size:12px;color:#999;margin-bottom:16px;">Choisissez un nouveau mot de passe admin</p>
+    <div class="admin-pw-err" id="cpErr"></div>
+    <input type="password" class="admin-pw-input" id="cpOld" placeholder="Ancien mot de passe" maxlength="30" style="margin-bottom:10px;letter-spacing:.1em;">
+    <input type="password" class="admin-pw-input" id="cpNew" placeholder="Nouveau mot de passe" maxlength="30" style="margin-bottom:10px;letter-spacing:.1em;">
+    <input type="password" class="admin-pw-input" id="cpConfirm" placeholder="Confirmer" maxlength="30" onkeydown="if(event.key==='Enter')doChangePw()">
+    <button class="admin-pw-btn" onclick="doChangePw()">Enregistrer →</button>
+    <button class="admin-pw-cancel" onclick="closeChangePw()">Annuler</button>
+  </div>
+</div>
+
+<!-- Toast notification -->
+<div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1a0a12;color:white;padding:12px 24px;border-radius:30px;font-weight:800;font-size:13px;font-family:'Nunito',sans-serif;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;"></div>
+<style>#toast.show{opacity:1;}</style>
 
 <footer>© 2025 House of Gelato · Douaouda Marine · Tipaza · Algérie 🍦❤️</footer>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
-  getFirestore,
-  collection,
-  onSnapshot,
-  doc,
-  updateDoc
+  getFirestore, collection, onSnapshot, doc, updateDoc,
+  getDocs, setDoc, writeBatch
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "PUT_YOUR_API_KEY",
-  authDomain: "PUT_YOUR_AUTH_DOMAIN",
-  projectId: "PUT_YOUR_PROJECT_ID",
-  storageBucket: "PUT_YOUR_STORAGE_BUCKET",
-  messagingSenderId: "PUT_YOUR_MESSAGING_SENDER_ID",
-  appId: "PUT_YOUR_APP_ID"
+  apiKey: "AIzaSyCEi7FOw14BkQsl28Eiewigc5OunZtHfHM",
+  authDomain: "house-of-gelato-ab4ae.firebaseapp.com",
+  projectId: "house-of-gelato-ab4ae",
+  storageBucket: "house-of-gelato-ab4ae.firebasestorage.app",
+  messagingSenderId: "306906351957",
+  appId: "1:306906351957:web:b6b5e19b0ec0a17b3687dc"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+/* ── All gelato flavors ── */
+const ALL_FLAVORS = [
+  {id:"fraise",       name:"Fraise",         cat:"Fruits",   emoji:"🍓", available:true},
+  {id:"citron",       name:"Citron",          cat:"Fruits",   emoji:"🍋", available:true},
+  {id:"peche",        name:"Pêche",           cat:"Fruits",   emoji:"🍑", available:true},
+  {id:"raisin",       name:"Raisin",          cat:"Fruits",   emoji:"🍇", available:true},
+  {id:"mangue",       name:"Mangue",          cat:"Fruits",   emoji:"🥭", available:true},
+  {id:"cerise",       name:"Cerise",          cat:"Fruits",   emoji:"🍒", available:true},
+  {id:"ananas",       name:"Ananas",          cat:"Fruits",   emoji:"🍍", available:true},
+  {id:"melon",        name:"Melon",           cat:"Fruits",   emoji:"🍈", available:true},
+  {id:"chocolat",     name:"Chocolat",        cat:"Chocolat", emoji:"🍫", available:true},
+  {id:"choc-blanc",   name:"Chocolat Blanc",  cat:"Chocolat", emoji:"🍫", available:true},
+  {id:"nutella",      name:"Nutella",         cat:"Chocolat", emoji:"🌰", available:true},
+  {id:"ferrero",      name:"Ferrero Rocher",  cat:"Chocolat", emoji:"🌰", available:true},
+  {id:"kinder",       name:"Kinder",          cat:"Chocolat", emoji:"🍬", available:true},
+  {id:"vanille",      name:"Vanille",         cat:"Crème",    emoji:"🍦", available:true},
+  {id:"creme-brulee", name:"Crème Brûlée",    cat:"Crème",    emoji:"🍮", available:true},
+  {id:"cafe",         name:"Café",            cat:"Crème",    emoji:"☕", available:true},
+  {id:"pistache",     name:"Pistache",        cat:"Crème",    emoji:"🥜", available:true},
+  {id:"noisette",     name:"Noisette",        cat:"Crème",    emoji:"🌰", available:true},
+  {id:"coco",         name:"Coco",            cat:"Crème",    emoji:"🥥", available:true},
+  {id:"caramel",      name:"Caramel",         cat:"Crème",    emoji:"🍬", available:true},
+  {id:"tiramisu",     name:"Tiramisu",        cat:"Crème",    emoji:"🍰", available:true},
+  {id:"twix",         name:"Twix",            cat:"Spécial",  emoji:"🍭", available:true},
+  {id:"snickers",     name:"Snickers",        cat:"Spécial",  emoji:"🍭", available:true},
+  {id:"bounty",       name:"Bounty",          cat:"Spécial",  emoji:"🍭", available:true},
+  {id:"kitkat",       name:"KitKat",          cat:"Spécial",  emoji:"🍭", available:true},
+  {id:"raffaelo",     name:"Raffaelo",        cat:"Spécial",  emoji:"🍭", available:true},
+  {id:"dubai",        name:"Chocolat Dubai",  cat:"Spécial",  emoji:"✨", available:true},
+  {id:"sorbet-citron",name:"Sorbet Citron",   cat:"Sorbet",   emoji:"🍋", available:true},
+  {id:"sorbet-fraise",name:"Sorbet Fraise",   cat:"Sorbet",   emoji:"🍓", available:true},
+  {id:"sorbet-orange",name:"Sorbet Orange",   cat:"Sorbet",   emoji:"🍊", available:true},
+];
+
+/* ── Auto-import: add flavors to Firestore if collection is empty ── */
+async function autoImportFlavors(){
+  const snap = await getDocs(collection(db,"flavors"));
+  if(snap.empty){
+    const batch = writeBatch(db);
+    ALL_FLAVORS.forEach(f=>{
+      const ref = doc(db,"flavors",f.id);
+      batch.set(ref,{name:f.name,cat:f.cat,emoji:f.emoji,available:f.available});
+    });
+    await batch.commit();
+    console.log("✅ Flavors imported to Firestore!");
+  }
+}
+autoImportFlavors();
+
+/* ── Password stored in localStorage (changeable by admin) ── */
+function getAdminPw(){ return localStorage.getItem("adminPw") || "02133"; }
+
 let flavors = [];
 let adminLoggedIn = false;
 let activeCat = "Tous";
-const ADMIN_PASSWORD = "02133";
 
-function openAdminLogin(){document.getElementById("adminPwOverlay").classList.add("show");setTimeout(()=>document.getElementById("adminPwInput").focus(),300);}
-function closeAdminLogin(){document.getElementById("adminPwOverlay").classList.remove("show");document.getElementById("adminPwInput").value="";document.getElementById("adminPwErr").textContent="";}
-function checkAdminPw(){const val=document.getElementById("adminPwInput").value;const errEl=document.getElementById("adminPwErr");if(val===ADMIN_PASSWORD){adminLoggedIn=true;closeAdminLogin();document.getElementById("admin-panel").classList.add("show");renderAdmin();document.getElementById("admin-panel").scrollIntoView({behavior:"smooth"});}else{errEl.textContent="❌ Mot de passe incorrect";document.getElementById("adminPwInput").value="";}}
-function logoutAdmin(){adminLoggedIn=false;document.getElementById("admin-panel").classList.remove("show");window.scrollTo({top:0,behavior:"smooth"});}
+function openAdminLogin(){
+  document.getElementById("adminPwOverlay").classList.add("show");
+  setTimeout(()=>document.getElementById("adminPwInput").focus(),300);
+}
+function closeAdminLogin(){
+  document.getElementById("adminPwOverlay").classList.remove("show");
+  document.getElementById("adminPwInput").value="";
+  document.getElementById("adminPwErr").textContent="";
+}
+function checkAdminPw(){
+  const val=document.getElementById("adminPwInput").value;
+  const errEl=document.getElementById("adminPwErr");
+  if(val===getAdminPw()){
+    adminLoggedIn=true;
+    closeAdminLogin();
+    document.getElementById("admin-panel").classList.add("show");
+    renderAdmin();
+    document.getElementById("admin-panel").scrollIntoView({behavior:"smooth"});
+  } else {
+    errEl.textContent="❌ Mot de passe incorrect";
+    document.getElementById("adminPwInput").value="";
+  }
+}
+function logoutAdmin(){
+  adminLoggedIn=false;
+  document.getElementById("admin-panel").classList.remove("show");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
 
+/* ── Change password ── */
+function openChangePw(){
+  document.getElementById("changePwOverlay").classList.add("show");
+  setTimeout(()=>document.getElementById("cpOld").focus(),300);
+}
+function closeChangePw(){
+  document.getElementById("changePwOverlay").classList.remove("show");
+  ["cpOld","cpNew","cpConfirm"].forEach(id=>document.getElementById(id).value="");
+  document.getElementById("cpErr").textContent="";
+}
+function doChangePw(){
+  const old=document.getElementById("cpOld").value;
+  const nw=document.getElementById("cpNew").value;
+  const conf=document.getElementById("cpConfirm").value;
+  const err=document.getElementById("cpErr");
+  if(old!==getAdminPw()){err.textContent="❌ Ancien mot de passe incorrect";return;}
+  if(nw.length<4){err.textContent="❌ Nouveau mot de passe trop court (min 4)";return;}
+  if(nw!==conf){err.textContent="❌ Les mots de passe ne correspondent pas";return;}
+  localStorage.setItem("adminPw",nw);
+  closeChangePw();
+  showToast("✅ Mot de passe changé !");
+}
+
+/* ── Toast notification ── */
+function showToast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg;t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),2500);
+}
+
+/* ── Client grid ── */
 function renderCats(){
   const cats=["Tous",...new Set(flavors.map(f=>f.cat).filter(Boolean))];
   document.getElementById("catRow").innerHTML=cats.map(c=>`<button class="cat-btn${c===activeCat?" active":""}" onclick="setCat('${c}')">${c}</button>`).join("");
@@ -385,64 +514,76 @@ function renderGrid(){
   const availGrid=document.getElementById("flavorGrid");
   const unavailGrid=document.getElementById("flavorGridUnavail");
   const unavailTitle=document.getElementById("unavailTitle");
-  availGrid.innerHTML=avail.length===0?'<div style="grid-column:1/-1;text-align:center;padding:20px;color:var(--muted);font-weight:700;font-size:13px;direction:rtl;">لا توجد نكهات متاحة في هذه الفئة حالياً</div>':avail.map(f=>`
+  availGrid.innerHTML=avail.length===0
+    ?'<div style="grid-column:1/-1;text-align:center;padding:20px;color:var(--muted);font-weight:700;font-size:13px;direction:rtl;">لا توجد نكهات متاحة في هذه الفئة حالياً</div>'
+    :avail.map(f=>`
     <div class="flavor-card" style="cursor:default;">
-      <img class="flavor-img" src="${f.img||''}" alt="${f.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="flavor-ph" style="display:none">${f.emoji||'🍦'}</div>
+      <div class="flavor-ph">${f.emoji||'🍦'}</div>
       <div class="flavor-body">
         <div class="flavor-name">${f.emoji||'🍦'} ${f.name||''}</div>
         <div class="flavor-sub">${f.cat||''}</div>
       </div>
-    </div>
-  `).join("");
+    </div>`).join("");
   if(unavail.length===0){unavailTitle.style.display="none";unavailGrid.style.display="none";}
   else{
     unavailTitle.style.display="block";unavailGrid.style.display="grid";
     unavailGrid.innerHTML=unavail.map(f=>`
       <div class="flavor-card" style="cursor:default;">
-        <img class="flavor-img" src="${f.img||''}" alt="${f.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="flavor-ph" style="display:none">${f.emoji||'🍦'}</div>
+        <div class="flavor-ph" style="background:#f0f0f0">${f.emoji||'🍦'}</div>
         <div class="unavail-badge">غير متاح</div>
         <div class="flavor-body">
           <div class="flavor-name" style="color:#aaa;">${f.emoji||'🍦'} ${f.name||''}</div>
           <div class="flavor-sub">${f.cat||''}</div>
         </div>
-      </div>
-    `).join("");
+      </div>`).join("");
   }
 }
+
+/* ── Admin grid ── */
 function renderAdmin(){
-  document.getElementById("adminStats").textContent=`🟢 ${flavors.filter(f=>f.available).length} dans le frigo · ⚫ ${flavors.filter(f=>!f.available).length} épuisés`;
+  const avCount=flavors.filter(f=>f.available).length;
+  document.getElementById("adminStats").textContent=`🟢 ${avCount} dans le frigo · ⚫ ${flavors.length-avCount} épuisés`;
   document.getElementById("adminGrid").innerHTML=flavors.map(f=>`
     <div class="admin-card${!f.available?" off":""}">
       <span class="a-emoji">${f.emoji||'🍦'}</span>
       <div class="a-info">
         <div class="a-name">${f.name||''}</div>
-        <div class="a-status ${f.available?"on":"off"}">${f.available?"🟢 Dans le frigo":"⚫ Épuisé"}</div>
+        <div class="a-status ${f.available?"on":"off"}">${f.available?"🟢 Disponible":"⚫ Épuisé"}</div>
       </div>
-      <button class="toggle${f.available?" on":""}" onclick="toggleAvail('${f.firebaseId}')"></button>
-    </div>
-  `).join("");
+      <button class="toggle${f.available?" on":""}" onclick="toggleAvail('${f.firebaseId}')" title="${f.available?'Marquer épuisé':'Marquer disponible'}"></button>
+    </div>`).join("");
 }
+
 async function toggleAvail(firebaseId){
   const f=flavors.find(x=>x.firebaseId===firebaseId);
   if(!f) return;
   await updateDoc(doc(db,"flavors",firebaseId),{available:!f.available});
+  showToast(f.available ? `⚫ ${f.name} marqué épuisé` : `🟢 ${f.name} disponible !`);
 }
+
+/* ── Toggle ALL on or off ── */
+async function setAllAvail(val){
+  const batch=writeBatch(db);
+  flavors.forEach(f=>batch.update(doc(db,"flavors",f.firebaseId),{available:val}));
+  await batch.commit();
+  showToast(val?"🟢 Tous les parfums sont disponibles !":"⚫ Tous les parfums sont épuisés");
+}
+
 window.openAdminLogin=openAdminLogin;
 window.closeAdminLogin=closeAdminLogin;
 window.checkAdminPw=checkAdminPw;
 window.logoutAdmin=logoutAdmin;
 window.setCat=setCat;
 window.toggleAvail=toggleAvail;
+window.setAllAvail=setAllAvail;
+window.openChangePw=openChangePw;
+window.closeChangePw=closeChangePw;
+window.doChangePw=doChangePw;
 
 onSnapshot(collection(db,"flavors"),(snapshot)=>{
   flavors=[];
-  snapshot.forEach((docu)=>{
-    flavors.push({firebaseId:docu.id,...docu.data()});
-  });
-  renderCats();
-  renderGrid();
+  snapshot.forEach((docu)=>{flavors.push({firebaseId:docu.id,...docu.data()});});
+  renderCats();renderGrid();
   if(adminLoggedIn) renderAdmin();
 });
 
