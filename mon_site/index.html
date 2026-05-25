@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>House of Gelato – Douaouda Marine</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --pink:#E91E8C;--pink2:#FF1493;--pink3:#FF69B4;--pink4:#FFB6C1;
+  --dark:#1a0a12;--white:#FFFAFC;
+  --yellow:#FFD700;--green:#32CD32;--blue:#00BFFF;--orange:#FF8C00;
+  --text:#2d0f1e;--muted:#9B6B7A;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;background:var(--white);color:var(--text);overflow-x:hidden;}
+
+/* ===== NAV ===== */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  background:rgba(255,250,252,0.95);backdrop-filter:blur(12px);
+  border-bottom:3px solid var(--pink);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px;
+}
+.nav-logo{font-family:'Pacifico',cursive;font-size:1.2rem;color:var(--pink);text-shadow:0 2px 4px rgba(233,30,140,0.3);}
+.nav-links{display:flex;gap:4px;}
+.nav-links a{
+  font-size:11px;font-weight:800;padding:6px 10px;border-radius:20px;
+  text-decoration:none;color:var(--muted);transition:all .2s;
+}
+.nav-links a:hover,.nav-links a.active{background:var(--pink);color:white;}
+
+/* ===== HERO ===== */
+.hero{
+  min-height:100vh;
+  background:linear-gradient(160deg,#E91E8C 0%,#FF1493 50%,#FF69B4 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:80px 20px 40px;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.hero-badge{
+  display:inline-block;background:white;color:var(--pink);
+  font-size:11px;font-weight:800;padding:6px 18px;border-radius:20px;
+  margin-bottom:16px;box-shadow:0 4px 16px rgba(0,0,0,0.2);
+  letter-spacing:.05em;
+}
+.hero h1{
+  font-family:'Pacifico',cursive;
+  font-size:clamp(2.5rem,10vw,4rem);
+  color:white;
+  text-shadow:0 4px 20px rgba(0,0,0,0.3);
+  line-height:1.1;margin-bottom:8px;
+}
+.hero h1 span{color:var(--yellow);}
+.hero-sub{
+  font-size:15px;font-weight:700;color:rgba(255,255,255,0.9);
+  margin-bottom:24px;
+}
+
+/* Color dots decoration */
+.color-dots{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin:15px 0;
+}
+.color-dot{
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  border:2px solid white;
+  box-shadow:0 2px 8px rgba(0,0,0,0.2);
+  animation:bounce 2s infinite;
+}
+.color-dot:nth-child(1){animation-delay:0s;}
+.color-dot:nth-child(2){animation-delay:0.2s;}
+.color-dot:nth-child(3){animation-delay:0.4s;}
+.color-dot:nth-child(4){animation-delay:0.6s;}
+@keyframes bounce{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-8px);}
+}
+
+.hero-cards{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:36px;}
+.hero-card{
+  background:white;border-radius:20px;padding:16px 20px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.15);
+  text-align:center;min-width:110px;
+}
+.hero-card .ic{font-size:28px;margin-bottom:6px;}
+.hero-card .label{font-size:11px;font-weight:800;color:var(--pink);}
+.hero-card .val{font-size:18px;font-weight:900;color:var(--dark);}
+
+.hero-btn{
+  display:inline-block;
+  background:var(--dark);color:white;
+  font-size:14px;font-weight:800;padding:14px 32px;
+  border-radius:30px;text-decoration:none;
+  box-shadow:0 8px 24px rgba(0,0,0,0.3);
+  transition:transform .2s;
+  font-family:'Nunito',sans-serif;border:none;cursor:pointer;
+  margin:0 6px 10px;
+}
+.hero-btn:hover{transform:translateY(-2px);}
+.hero-btn.outline{background:white;color:var(--pink);}
+
+/* ===== SECTION ===== */
+section{padding:50px 16px;}
+.sec-title{
+  font-family:'Pacifico',cursive;
+  font-size:clamp(1.8rem,6vw,2.5rem);
+  color:var(--pink);text-align:center;margin-bottom:6px;
+}
+.sec-sub{font-size:13px;color:var(--muted);text-align:center;font-weight:700;margin-bottom:24px;}
+
+/* ===== COUPES SECTION - REAL PDF IMAGE ===== */
+#coupes{
+  background:linear-gradient(180deg,#E91E8C 0%,#FF1493 50%,#FF69B4 100%);
+  padding:40px 0;
+  position:relative;
+  overflow:hidden;
+}
+#coupes .sec-title{color:white;text-shadow:0 2px 10px rgba(0,0,0,0.3);margin-bottom:4px;}
+#coupes .sec-sub{color:rgba(255,255,255,0.85);margin-bottom:15px;}
+
+/* Decorative border */
+.deco-border{
+  position:relative;
+  padding:20px;
+  margin:0 auto;
+  max-width:900px;
+}
+.deco-border::before{
+  content:'';
+  position:absolute;
+  top:0;left:20px;right:20px;bottom:0;
+  border:4px dashed rgba(255,255,255,0.4);
+  border-radius:20px;
+  pointer-events:none;
+}
+
+/* Floating decorations */
+.float-deco{
+  position:absolute;
+  font-size:30px;
+  opacity:0.6;
+  animation:float 3s ease-in-out infinite;
+  z-index:1;
+}
+.float-deco:nth-child(1){top:20px;left:10px;animation-delay:0s;}
+.float-deco:nth-child(2){top:60px;right:15px;animation-delay:0.5s;}
+.float-deco:nth-child(3){bottom:40px;left:20px;animation-delay:1s;}
+.float-deco:nth-child(4){bottom:80px;right:10px;animation-delay:1.5s;}
+.float-deco:nth-child(5){top:120px;left:5px;animation-delay:0.3s;}
+.float-deco:nth-child(6){bottom:150px;right:20px;animation-delay:0.8s;}
+
+@keyframes float{
+  0%,100%{transform:translateY(0) rotate(0deg);}
+  50%{transform:translateY(-15px) rotate(10deg);}
+}
+
+.coupes-image-container{
+  position:relative;
+  max-width:800px;
+  margin:0 auto;
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,0.4);
+  border:6px solid white;
+}
+.coupes-image{
+  width:100%;
+  height:auto;
+  display:block;
+}
+
+/* ===== GELATO CORNER ===== */
+#gelato{background:linear-gradient(180deg,#FFF0F5 0%,#FFE4ED 100%);}
+.cats{display:flex;gap:7px;overflow-x:auto;padding-bottom:10px;margin-bottom:16px;scrollbar-width:none;justify-content:center;flex-wrap:wrap;}
+.cats::-webkit-scrollbar{display:none;}
+.cat-btn{
+  white-space:nowrap;font-size:12px;font-weight:800;
+  padding:7px 16px;border-radius:20px;
+  border:2px solid var(--pink3);background:white;color:var(--muted);
+  cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;
+}
+.cat-btn.active{background:var(--pink);color:white;border-color:var(--pink);}
+.flavor-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;max-width:700px;margin:0 auto 20px;}
+.flavor-card{
+  background:white;border-radius:18px;overflow:hidden;
+  border:2px solid rgba(255,179,198,.5);
+  box-shadow:0 3px 12px rgba(247,37,133,0.07);
+  cursor:pointer;transition:all .2s;position:relative;
+  user-select:none;
+}
+.flavor-card:active{transform:scale(.96);}
+.flavor-card.selected{border-color:var(--pink);box-shadow:0 6px 20px rgba(247,37,133,0.25);}
+.flavor-card.unavailable{opacity:.4;cursor:not-allowed;}
+.flavor-img{width:100%;height:100px;object-fit:cover;display:block;}
+.flavor-ph{width:100%;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px;background:var(--pink4);}
+.flavor-body{padding:7px 10px 10px;}
+.flavor-name{font-size:11px;font-weight:800;color:var(--dark);}
+.flavor-sub{font-size:9px;color:var(--muted);font-weight:700;}
+.check-badge{
+  position:absolute;top:6px;right:6px;width:22px;height:22px;
+  background:var(--pink);border-radius:50%;
+  display:none;align-items:center;justify-content:center;
+  color:white;font-size:11px;font-weight:900;
+  box-shadow:0 2px 8px rgba(247,37,133,.5);
+}
+.flavor-card.selected .check-badge{display:flex;}
+.epuise{position:absolute;top:6px;left:6px;font-size:9px;background:#E24B4A;color:white;padding:2px 7px;border-radius:10px;font-weight:800;}
+
+/* GELATO INFO BOX */
+.gelato-info-box{
+  max-width:700px;margin:0 auto 20px;
+  background:white;border-radius:18px;
+  border:2.5px solid var(--pink3);
+  padding:16px 20px;text-align:center;
+  box-shadow:0 4px 16px rgba(233,30,140,.1);
+}
+.gelato-info-ar{
+  font-size:16px;font-weight:800;color:var(--dark);
+  direction:rtl;margin-bottom:10px;
+  font-family:'Nunito',sans-serif;
+}
+.gelato-legend{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--muted);}
+.legend-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;}
+.available-dot{background:var(--pink);box-shadow:0 2px 6px rgba(233,30,140,.4);}
+.unavailable-dot{background:#ddd;border:2px dashed #bbb;}
+.legend-sep{color:var(--pink3);font-weight:900;}
+
+/* FLAVOR SECTION TITLES */
+.flavors-section-title{
+  max-width:700px;margin:0 auto 12px;
+  font-size:14px;font-weight:800;
+  padding:8px 16px;border-radius:12px;
+  direction:rtl;text-align:right;
+}
+.available-title{
+  color:var(--pink);background:rgba(233,30,140,.08);
+  border-left:4px solid var(--pink);
+}
+.unavailable-title{
+  color:#aaa;background:#f5f5f5;
+  border-left:4px solid #ddd;
+  margin-top:24px;
+}
+
+/* FADED GRID for unavailable */
+.faded-grid .flavor-card{
+  opacity:0.45;
+  filter:grayscale(60%);
+  cursor:default;
+  position:relative;
+}
+.faded-grid .flavor-card::after{
+  content:'';
+  position:absolute;inset:0;
+  background:rgba(255,255,255,0.35);
+  border-radius:18px;
+  pointer-events:none;
+}
+.unavail-badge{
+  position:absolute;top:6px;left:6px;
+  font-size:9px;background:#ccc;color:white;
+  padding:2px 8px;border-radius:10px;font-weight:800;
+}
+
+/* SEL BAR */
+.sel-bar{display:none!important;}
+
+/* ===== PIZZA SECTION - REAL PDF IMAGE ===== */
+#pizza{
+  background:linear-gradient(180deg,#fff5f5 0%,#ffe0e0 100%);
+  padding:40px 0;
+  position:relative;
+  overflow:hidden;
+}
+#pizza .sec-title{color:var(--pink);}
+#pizza .sec-sub{color:var(--muted);}
+
+/* Pizza decorations */
+.pizza-deco{
+  position:absolute;
+  font-size:40px;
+  opacity:0.15;
+  z-index:0;
+}
+.pizza-deco:nth-child(1){top:50px;left:20px;transform:rotate(-20deg);}
+.pizza-deco:nth-child(2){top:100px;right:30px;transform:rotate(15deg);}
+.pizza-deco:nth-child(3){bottom:80px;left:40px;transform:rotate(25deg);}
+.pizza-deco:nth-child(4){bottom:150px;right:20px;transform:rotate(-15deg);}
+
+.pizza-image-container{
+  position:relative;
+  max-width:800px;
+  margin:0 auto 20px;
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,0.3);
+  border:6px solid white;
+  z-index:1;
+}
+.pizza-image{
+  width:100%;
+  height:auto;
+  display:block;
+}
+
+/* Pizza extras styling */
+.extras-wrapper{
+  position:relative;
+  z-index:1;
+  max-width:700px;
+  margin:0 auto;
+}
+.extras-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px;}
+.extra-card{
+  background:white;
+  border:3px solid var(--pink);
+  border-radius:16px;
+  padding:14px 16px;
+  box-shadow:0 4px 15px rgba(233,30,140,0.15);
+}
+.extra-card h4{
+  font-size:14px;
+  font-weight:900;
+  color:var(--pink);
+  margin-bottom:10px;
+  text-align:center;
+  text-transform:uppercase;
+}
+.extra-row{
+  display:flex;
+  justify-content:space-between;
+  font-size:12px;
+  font-weight:700;
+  padding:6px 0;
+  border-bottom:2px dashed var(--pink4);
+  color:var(--text);
+}
+.extra-row:last-child{border-bottom:none;}
+.extra-row .val{color:var(--pink);font-weight:900;}
+
+/* ===== CONTACT ===== */
+#contact{
+  background:linear-gradient(160deg,#E91E8C,#FF1493);
+  position:relative;
+  overflow:hidden;
+}
+#contact .sec-title{color:white;}
+#contact .sec-sub{color:rgba(255,255,255,0.85);}
+.contact-box{max-width:400px;margin:0 auto;text-align:center;position:relative;z-index:1;}
+.contact-links{display:flex;flex-direction:column;gap:10px;margin-top:20px;}
+.contact-link{
+  background:white;border-radius:16px;padding:14px 20px;
+  display:flex;align-items:center;gap:12px;text-decoration:none;
+  box-shadow:0 4px 16px rgba(0,0,0,.15);transition:all .2s;
+}
+.contact-link:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.25);}
+.contact-link .ic{font-size:22px;}
+.contact-link .ct{text-align:left;}
+.contact-link .ct-label{font-size:10px;font-weight:700;color:var(--muted);}
+.contact-link .ct-val{font-size:13px;font-weight:800;color:var(--dark);}
+
+/* OVERLAY */
+.overlay{position:fixed;inset:0;background:rgba(26,10,18,.6);z-index:800;display:none;align-items:flex-end;justify-content:center;}
+.overlay.show{display:flex;}
+.sheet{background:white;border-radius:26px 26px 0 0;padding:22px 18px 36px;width:100%;max-width:500px;}
+.sheet-handle{width:36px;height:4px;background:#eee;border-radius:2px;margin:0 auto 18px;}
+.sheet h2{font-family:'Pacifico',cursive;font-size:1.2rem;color:var(--dark);margin-bottom:4px;}
+.sheet p{font-size:12px;color:var(--muted);font-weight:700;margin-bottom:14px;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;}
+.chip{background:var(--pink4);color:var(--dark);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;}
+.sheet-btns{display:flex;gap:8px;}
+.sheet-btns button{flex:1;padding:12px;border-radius:22px;font-size:13px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;border:none;}
+.btn-cancel{background:#f5f0f2;color:var(--dark);}
+.btn-go{background:linear-gradient(135deg,var(--pink),#FF6EB4);color:white;box-shadow:0 4px 14px rgba(247,37,133,.35);}
+.success{display:none;text-align:center;padding:10px 0;}
+.success.show{display:block;}
+.success .big{font-size:52px;margin-bottom:10px;}
+.success h3{font-family:'Pacifico',cursive;font-size:1.1rem;color:var(--dark);margin-bottom:6px;}
+.success p{font-size:12px;color:var(--muted);font-weight:700;margin-bottom:18px;}
+.btn-reset{width:100%;padding:13px;border-radius:22px;background:linear-gradient(135deg,var(--pink),#FF6EB4);color:white;border:none;font-size:14px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+
+/* ADMIN */
+#admin-panel{display:none;padding:60px 16px;}
+#admin-panel.show{display:block;}
+.admin-title{background:linear-gradient(135deg,var(--pink),#FF6EB4);color:white;padding:14px 18px;border-radius:14px;font-size:15px;font-weight:800;margin-bottom:14px;text-align:center;}
+.admin-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;max-width:600px;margin:0 auto;}
+.admin-card{background:white;border-radius:12px;border:1.5px solid var(--pink3);padding:10px 12px;display:flex;align-items:center;gap:8px;}
+.a-emoji{font-size:18px;}
+.a-name{flex:1;font-size:11px;font-weight:800;color:var(--dark);}
+.toggle{width:38px;height:22px;border-radius:11px;background:#e0e0e0;position:relative;cursor:pointer;border:none;transition:background .2s;flex-shrink:0;}
+.toggle.on{background:var(--green);}
+.toggle::after{content:'';position:absolute;width:16px;height:16px;border-radius:50%;background:white;top:3px;left:3px;transition:left .2s;}
+.toggle.on::after{left:19px;}
+
+/* MENU OPEN CARD */
+.menu-open-card{
+  display:block;text-decoration:none;
+  background:white;
+  border-radius:22px;border:2px solid rgba(255,255,255,0.6);
+  overflow:hidden;
+  box-shadow:0 12px 40px rgba(0,0,0,0.18);
+  transition:all .25s;
+  max-width:600px;margin:0 auto;
+  position:relative;z-index:2;
+}
+.menu-open-card:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,0.25);}
+.menu-open-card:active{transform:scale(.98);}
+.menu-open-card-inner{
+  display:flex;align-items:center;gap:14px;
+  padding:20px 18px;
+}
+.menu-open-icon{font-size:48px;flex-shrink:0;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.15));}
+.menu-open-text{flex:1;}
+.menu-open-title{
+  font-family:'Pacifico',cursive;
+  font-size:1.2rem;color:var(--pink);
+  margin-bottom:4px;
+}
+.menu-open-sub{
+  font-size:11px;color:var(--muted);font-weight:700;
+  line-height:1.5;margin-bottom:6px;
+}
+.menu-open-prices{
+  display:inline-block;
+  background:var(--pink4);color:var(--pink);
+  font-size:12px;font-weight:800;
+  padding:3px 12px;border-radius:20px;
+}
+.menu-open-arrow{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  flex-shrink:0;
+}
+.menu-open-arrow span:first-child{
+  font-size:10px;font-weight:800;color:var(--muted);
+  white-space:nowrap;
+}
+.arrow-icon{
+  width:38px;height:38px;border-radius:50%;
+  background:linear-gradient(135deg,var(--pink),#FF6EB4);
+  color:white;font-size:18px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 14px rgba(233,30,140,.35);
+}
+.menu-open-footer{
+  background:linear-gradient(135deg,var(--pink),#FF6EB4);
+  padding:12px 20px;
+  display:flex;justify-content:space-between;align-items:center;
+  color:white;font-size:12px;font-weight:800;
+}
+
+/* PDF BUTTON */
+.pdf-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  background:linear-gradient(135deg,var(--pink),#FF6EB4);
+  color:white;text-decoration:none;
+  font-size:14px;font-weight:800;
+  padding:15px 30px;border-radius:30px;
+  box-shadow:0 8px 28px rgba(233,30,140,0.4);
+  transition:all .25s;font-family:'Nunito',sans-serif;
+  letter-spacing:.02em;border:none;cursor:pointer;margin-top:18px;
+}
+.pdf-btn:hover{transform:translateY(-3px);}
+.pdf-btn-wrap{text-align:center;position:relative;z-index:2;padding:0 20px;}
+
+/* ADMIN PASSWORD OVERLAY */
+.admin-pw-overlay{
+  position:fixed;inset:0;background:rgba(26,10,18,.88);
+  z-index:3000;display:none;align-items:center;justify-content:center;
+  backdrop-filter:blur(10px);
+}
+.admin-pw-overlay.show{display:flex;}
+.admin-pw-box{
+  background:white;border-radius:28px;padding:36px 28px 28px;
+  width:88%;max-width:340px;text-align:center;
+  box-shadow:0 24px 64px rgba(0,0,0,0.45);
+  animation:popIn .3s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn{from{transform:scale(.8);opacity:0;}to{transform:scale(1);opacity:1;}}
+.admin-pw-box .lock-icon{font-size:44px;margin-bottom:14px;}
+.admin-pw-box h3{font-family:'Pacifico',cursive;color:var(--pink);font-size:1.25rem;margin-bottom:6px;}
+.admin-pw-box p{font-size:12px;color:var(--muted);font-weight:700;margin-bottom:18px;}
+.admin-pw-input{
+  width:100%;padding:13px 16px;border-radius:16px;
+  border:2.5px solid var(--pink3);font-size:18px;font-weight:800;
+  font-family:'Nunito',sans-serif;color:var(--dark);
+  outline:none;margin-bottom:12px;text-align:center;
+  letter-spacing:.3em;transition:border-color .2s;
+}
+.admin-pw-input:focus{border-color:var(--pink);}
+.admin-pw-input.error{border-color:#E24B4A;animation:shake .3s;}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-8px);}75%{transform:translateX(8px);}50%{transform:translateX(6px);}}
+.admin-pw-err{font-size:12px;color:#E24B4A;font-weight:800;margin-bottom:10px;min-height:18px;}
+.admin-pw-btn{
+  width:100%;padding:13px;border-radius:18px;
+  background:linear-gradient(135deg,var(--pink),#FF6EB4);
+  color:white;border:none;font-size:14px;font-weight:800;
+  cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:10px;
+}
+.admin-pw-cancel{
+  width:100%;padding:10px;border-radius:18px;
+  background:#f5f0f2;color:var(--muted);border:none;
+  font-size:13px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;
+}
+#admin-panel{display:none;background:#FFF5F8;padding:30px 16px 60px;}
+#admin-panel.show{display:block;}
+.admin-topbar{
+  max-width:620px;margin:0 auto 16px;
+  background:linear-gradient(135deg,var(--pink),#FF6EB4);
+  border-radius:18px;padding:16px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 8px 24px rgba(233,30,140,.3);
+}
+.admin-topbar-info{color:white;}
+.admin-topbar-title{font-family:'Pacifico',cursive;font-size:1.1rem;}
+.admin-topbar-sub{font-size:11px;opacity:.8;font-weight:700;margin-top:2px;}
+.admin-logout-btn{
+  background:white;color:var(--pink);border:none;
+  padding:8px 16px;border-radius:20px;
+  font-size:12px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;
+}
+.admin-hint{
+  max-width:620px;margin:0 auto 16px;
+  background:white;border:2px solid var(--pink3);
+  border-radius:14px;padding:10px 16px;
+  font-size:12px;font-weight:700;color:var(--muted);text-align:center;
+}
+.admin-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;max-width:620px;margin:0 auto;}
+.admin-card{background:white;border-radius:14px;border:2px solid var(--pink3);padding:11px 13px;display:flex;align-items:center;gap:9px;transition:all .2s;}
+.admin-card.off{background:#f9f9f9;border-color:#ddd;}
+.a-emoji{font-size:20px;flex-shrink:0;}
+.a-info{flex:1;}
+.a-name{font-size:11px;font-weight:800;color:var(--dark);}
+.a-status{font-size:9px;font-weight:800;margin-top:1px;}
+.a-status.on{color:#32CD32;}.a-status.off{color:#bbb;}
+.toggle{width:42px;height:24px;border-radius:12px;background:#e0e0e0;position:relative;cursor:pointer;border:none;transition:background .25s;flex-shrink:0;}
+.toggle.on{background:#32CD32;}
+.toggle::after{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:white;top:3px;left:3px;transition:left .25s;box-shadow:0 1px 4px rgba(0,0,0,.2);}
+.toggle.on::after{left:21px;}
+
+footer{background:var(--dark);color:white;text-align:center;padding:20px;font-size:12px;font-weight:700;opacity:.8;}
+
+/* Confetti animation */
+.confetti{
+  position:fixed;
+  width:10px;height:10px;
+  background:var(--pink);
+  animation:confetti-fall 3s linear forwards;
+  z-index:9999;
+  border-radius:50%;
+}
+@keyframes confetti-fall{
+  0%{transform:translateY(-100px) rotate(0deg);opacity:1;}
+  100%{transform:translateY(100vh) rotate(720deg);opacity:0;}
+}
+
+/* Responsive */
+@media(max-width:600px){
+  .extras-row{grid-template-columns:1fr;}
+  .float-deco{font-size:20px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">🍦 House of Gelato</div>
+  <div class="nav-links">
+    <a href="#hero" class="active">Accueil</a>
+    <a href="#coupes">Coupes</a>
+    <a href="#gelato">Glaces</a>
+    <a href="#pizza">Pizza</a>
+    <a href="#contact">Contact</a>
+    <a href="#" onclick="openAdminLogin();return false;" style="background:var(--pink);color:white;">⚙️</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-badge">📍 Douaouda Marine · Tipaza · Algérie</div>
+  <h1>House of <span>Gelato</span></h1>
+  <p class="hero-sub">🍕 Gelato Artisanal · Pizza Italienne · Bord de Mer 🌊</p>
+  <div class="color-dots">
+    <div class="color-dot" style="background:#FFD700"></div>
+    <div class="color-dot" style="background:#32CD32"></div>
+    <div class="color-dot" style="background:#FF8C00"></div>
+    <div class="color-dot" style="background:#00BFFF"></div>
+  </div>
+  <div class="hero-cards">
+    <div class="hero-card"><div class="ic">🍦</div><div class="label">Parfums</div><div class="val">32+</div></div>
+    <div class="hero-card"><div class="ic">🍕</div><div class="label">Pizzas</div><div class="val">15+</div></div>
+    <div class="hero-card"><div class="ic">🌊</div><div class="label">Mer</div><div class="val">Bord</div></div>
+  </div>
+</section>
+
+<!-- COUPES - REAL PDF IMAGE -->
+<section id="coupes">
+  <div class="sec-title">🍨 Nos Coupes</div>
+  <div class="sec-sub">Un pur moment de bonheur</div>
+  <div class="color-dots">
+    <div class="color-dot" style="background:#FFD700"></div>
+    <div class="color-dot" style="background:#32CD32"></div>
+    <div class="color-dot" style="background:#FF8C00"></div>
+    <div class="color-dot" style="background:#00BFFF"></div>
+  </div>
+  
+  <div class="deco-border">
+    <div class="float-deco">🍨</div>
+    <div class="float-deco">🍦</div>
+    <div class="float-deco">🍧</div>
+    <div class="float-deco">🍓</div>
+    <div class="float-deco">🍫</div>
+    <div class="float-deco">🍒</div>
+
+    <a href="gelato_creme.pdf" target="_blank" class="menu-open-card">
+      <div class="menu-open-card-inner">
+        <div class="menu-open-icon">🍨</div>
+        <div class="menu-open-text">
+          <div class="menu-open-title">Menu des Coupes</div>
+          <div class="menu-open-sub">Citronnelle · Banana Split · Ferrero Rocher · Snickers · et plus encore…</div>
+          <div class="menu-open-prices">de 650 DA à 1200 DA</div>
+        </div>
+        <div class="menu-open-arrow">
+          <span>Voir le menu</span>
+          <span class="arrow-icon">→</span>
+        </div>
+      </div>
+      <div class="menu-open-footer">
+        <span>📄 Ouvrir le PDF complet</span>
+        <span>15 coupes disponibles</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- GELATO CORNER -->
+<section id="gelato">
+  <div class="sec-title">🍦 Corner Gelato</div>
+  <div class="sec-sub">Choisissez vos parfums, récupérez au frigo !</div>
+
+  <!-- Arabic info box -->
+  <div class="gelato-info-box">
+    <div class="gelato-info-ar">🍦 اختار نكهتك قبل ما تروح للفريجيدير!</div>
+    <div class="gelato-legend">
+      <span class="legend-item"><span class="legend-dot available-dot"></span> متاح الآن</span>
+      <span class="legend-sep">·</span>
+      <span class="legend-item"><span class="legend-dot unavailable-dot"></span> غير متاح حالياً</span>
+    </div>
+  </div>
+
+  <div class="cats" id="catRow"></div>
+
+  <!-- Available flavors -->
+  <div class="flavors-section-title available-title">✅ النكهات المتاحة الآن</div>
+  <div class="flavor-grid" id="flavorGrid"></div>
+
+  <!-- Unavailable flavors -->
+  <div class="flavors-section-title unavailable-title" id="unavailTitle">😔 غير متاحة حالياً</div>
+  <div class="flavor-grid faded-grid" id="flavorGridUnavail"></div>
+</section>
+
+<!-- PIZZA - REAL PDF IMAGE -->
+<section id="pizza">
+  <div class="sec-title">🍕 Italian Menu Pizza</div>
+  <div class="sec-sub">Pâte fraîche · Ingrédients de qualité</div>
+  <div class="color-dots">
+    <div class="color-dot" style="background:#FFD700"></div>
+    <div class="color-dot" style="background:#32CD32"></div>
+    <div class="color-dot" style="background:#FF8C00"></div>
+    <div class="color-dot" style="background:#00BFFF"></div>
+  </div>
+  
+  <!-- Pizza decorations -->
+  <div class="pizza-deco">🍕</div>
+  <div class="pizza-deco">🍅</div>
+  <div class="pizza-deco">🧀</div>
+  <div class="pizza-deco">🌶️</div>
+
+  <div style="max-width:700px;margin:0 auto 20px;padding:0 16px;position:relative;z-index:1;">
+    <a href="pizza.pdf" target="_blank" class="menu-open-card" style="background:linear-gradient(135deg,#fff0f5,#ffe4ed);border-color:rgba(233,30,140,.25);">
+      <div class="menu-open-card-inner">
+        <div class="menu-open-icon">🍕</div>
+        <div class="menu-open-text">
+          <div class="menu-open-title">Italian Menu Pizza</div>
+          <div class="menu-open-sub">Merguez · 4 Fromages · Royale · Spéciale Chef · et plus encore…</div>
+          <div class="menu-open-prices">de 600 DA à 3000 DA</div>
+        </div>
+        <div class="menu-open-arrow">
+          <span>Voir le menu</span>
+          <span class="arrow-icon">→</span>
+        </div>
+      </div>
+      <div class="menu-open-footer" style="background:var(--pink);color:white;">
+        <span>📄 Ouvrir le PDF complet</span>
+        <span>17 pizzas disponibles</span>
+      </div>
+    </a>
+  </div>
+  
+  <div class="extras-wrapper">
+    <div class="extras-row">
+      <div class="extra-card">
+        <h4>➕ Suppléments</h4>
+        <div class="extra-row"><span>Cheddar</span><span class="val">S 150 · M 250 · L 350</span></div>
+        <div class="extra-row"><span>Ingrédients</span><span class="val">S 150 · M 300 · L 400</span></div>
+      </div>
+      <div class="extra-card">
+        <h4>🥤 Boissons</h4>
+        <div class="extra-row"><span>Cannette</span><span class="val">100 DA</span></div>
+        <div class="extra-row"><span>Soda 1L</span><span class="val">150 DA</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="sec-title">📞 Nous Trouver</div>
+  <div class="sec-sub">Venez nous rendre visite !</div>
+  <div class="color-dots">
+    <div class="color-dot" style="background:#FFD700"></div>
+    <div class="color-dot" style="background:#32CD32"></div>
+    <div class="color-dot" style="background:#FF8C00"></div>
+    <div class="color-dot" style="background:#00BFFF"></div>
+  </div>
+  <div class="contact-box">
+    <div class="contact-links">
+      <a href="https://www.instagram.com/house_of_gelato" class="contact-link">
+        <span class="ic">📸</span>
+        <div class="ct"><div class="ct-label">Instagram</div><div class="ct-val">@house_of_gelato</div></div>
+      </a>
+      <a href="https://www.facebook.com/HouseOfGelato" class="contact-link">
+        <span class="ic">👥</span>
+        <div class="ct"><div class="ct-label">Facebook</div><div class="ct-val">Gelato Douaouda marine</div></div>
+      </a>
+      <a href="https://maps.google.com/?q=Douaouda+Marine+Tipaza+Algeria" class="contact-link">
+        <span class="ic">📍</span>
+        <div class="ct"><div class="ct-label">Adresse</div><div class="ct-val">Douaouda Marine · Tipaza</div></div>
+      </a>
+      <a href="https://www.tiktok.com/@house_of_gelato" class="contact-link">
+        <span class="ic">🎵</span>
+        <div class="ct"><div class="ct-label">TikTok</div><div class="ct-val">@house_of_gelato</div></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ADMIN PASSWORD OVERLAY -->
+<div class="admin-pw-overlay" id="adminPwOverlay">
+  <div class="admin-pw-box">
+    <div class="lock-icon">🔐</div>
+    <h3>Espace Admin</h3>
+    <p>Entrez le mot de passe pour gérer les parfums disponibles</p>
+    <div class="admin-pw-err" id="adminPwErr"></div>
+    <input type="password" class="admin-pw-input" id="adminPwInput"
+           placeholder="••••••" maxlength="20"
+           onkeydown="if(event.key==='Enter')checkAdminPw()">
+    <button class="admin-pw-btn" onclick="checkAdminPw()">Connexion →</button>
+    <button class="admin-pw-cancel" onclick="closeAdminLogin()">Annuler</button>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="admin-panel">
+  <div class="admin-topbar">
+    <div class="admin-topbar-info">
+      <div class="admin-topbar-title">⚙️ Gestion des Parfums</div>
+      <div class="admin-topbar-sub">🟢 visible clients · ⚫ caché de la page</div>
+    </div>
+    <button class="admin-logout-btn" onclick="logoutAdmin()">🚪 Quitter</button>
+  </div>
+  <div class="admin-hint">Activez uniquement les parfums présents dans le frigo · Les autres seront invisibles pour les clients</div>
+  <div class="admin-grid" id="adminGrid"></div>
+</div>
+
+<!-- (selection bar removed - view only mode) -->
+
+<footer>© 2025 House of Gelato · Douaouda Marine · Tipaza · Algérie 🍦❤️</footer>
+
+<script>
+// ===== DATA =====
+const flavors = [
+  {id:1,  name:"Chocolat Dubai",    cat:"Chocolat", emoji:"✨", img:"https://images.unsplash.com/photo-1511381939415-e44015466834?w=300&h=200&fit=crop", available:true},
+  {id:2,  name:"Côte d'Or",         cat:"Chocolat", emoji:"🍫", img:"https://images.unsplash.com/photo-1481391319762-47dff72954d9?w=300&h=200&fit=crop", available:true},
+  {id:3,  name:"Milka",             cat:"Chocolat", emoji:"🟣", img:"https://images.unsplash.com/photo-1548907040-4baa42d10919?w=300&h=200&fit=crop", available:true},
+  {id:4,  name:"Cioccolato Bianco", cat:"Chocolat", emoji:"🤍", img:"https://images.unsplash.com/photo-1587132137056-c179706b2843?w=300&h=200&fit=crop", available:true},
+  {id:5,  name:"Mama Que Buena",    cat:"Chocolat", emoji:"🍫", img:"https://images.unsplash.com/photo-1606312619070-d48b4c652a52?w=300&h=200&fit=crop", available:true},
+  {id:6,  name:"Coffee",            cat:"Café",     emoji:"☕", img:"https://images.unsplash.com/photo-1497515114629-f71d768fd07c?w=300&h=200&fit=crop", available:true},
+  {id:7,  name:"Caffè Latte",       cat:"Café",     emoji:"🥛", img:"https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=300&h=200&fit=crop", available:true},
+  {id:8,  name:"Panna Cotta",       cat:"Crème",    emoji:"🍮", img:"https://images.unsplash.com/photo-1488477181899-ba8ad35adfe7?w=300&h=200&fit=crop", available:true},
+  {id:9,  name:"Torroncino",        cat:"Crème",    emoji:"🍬", img:"https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=300&h=200&fit=crop", available:true},
+  {id:10, name:"Nougat",            cat:"Crème",    emoji:"🍯", img:"https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=300&h=200&fit=crop", available:true},
+  {id:11, name:"Orange",            cat:"Fruits",   emoji:"🍊", img:"https://images.unsplash.com/photo-1557800636-894a64c1696f?w=300&h=200&fit=crop", available:true},
+  {id:12, name:"Tropical",          cat:"Fruits",   emoji:"🌴", img:"https://images.unsplash.com/photo-1546173159-315724a31696?w=300&h=200&fit=crop", available:true},
+  {id:13, name:"Ananas",            cat:"Fruits",   emoji:"🍍", img:"https://images.unsplash.com/photo-1548093561-c4a8d35d49d5?w=300&h=200&fit=crop", available:true},
+  {id:14, name:"Mango",             cat:"Fruits",   emoji:"🥭", img:"https://images.unsplash.com/photo-1553279768-865429fa0078?w=300&h=200&fit=crop", available:true},
+  {id:15, name:"Peach",             cat:"Fruits",   emoji:"🍑", img:"https://images.unsplash.com/photo-1621955511812-46c7a27b6f7f?w=300&h=200&fit=crop", available:true},
+  {id:16, name:"Fraise des Bois",   cat:"Fruits",   emoji:"🍓", img:"https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=300&h=200&fit=crop", available:true},
+  {id:17, name:"Fraise",            cat:"Fruits",   emoji:"🍓", img:"https://images.unsplash.com/photo-1504387828636-abeb50778c0c?w=300&h=200&fit=crop", available:true},
+  {id:18, name:"Amarena Crispy",    cat:"Fruits",   emoji:"🍒", img:"https://images.unsplash.com/photo-1528821128474-27f963b062bf?w=300&h=200&fit=crop", available:true},
+  {id:19, name:"Vanille",           cat:"Classique",emoji:"🌿", img:"https://images.unsplash.com/photo-1570197571499-166b36435e9f?w=300&h=200&fit=crop", available:true},
+  {id:20, name:"Yogurt",            cat:"Classique",emoji:"🥛", img:"https://images.unsplash.com/photo-1488477181899-ba8ad35adfe7?w=300&h=200&fit=crop", available:true},
+  {id:21, name:"Yaourt Fraise",     cat:"Classique",emoji:"🍓", img:"https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?w=300&h=200&fit=crop", available:true},
+  {id:22, name:"Walnut",            cat:"Classique",emoji:"🫘", img:"https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=300&h=200&fit=crop", available:true},
+  {id:23, name:"Nocciola IGP",      cat:"Classique",emoji:"🌰", img:"https://images.unsplash.com/photo-1599599810769-bcde5a160d32?w=300&h=200&fit=crop", available:true},
+  {id:24, name:"Mandorla",          cat:"Classique",emoji:"🤍", img:"https://images.unsplash.com/photo-1576506295286-5cda18df43e7?w=300&h=200&fit=crop", available:true},
+  {id:25, name:"Réglisse",          cat:"Classique",emoji:"🖤", img:"https://images.unsplash.com/photo-1481391319762-47dff72954d9?w=300&h=200&fit=crop", available:true},
+  {id:26, name:"Beldi (بلدي)",      cat:"Classique",emoji:"⭐", img:"https://images.unsplash.com/photo-1570197571499-166b36435e9f?w=300&h=200&fit=crop", available:true},
+  {id:27, name:"Snickers",          cat:"Spécial",  emoji:"🥜", img:"https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=300&h=200&fit=crop", available:true},
+  {id:28, name:"Cookies Caramel",   cat:"Spécial",  emoji:"🍪", img:"https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=300&h=200&fit=crop", available:true},
+  {id:29, name:"Tiramisu",          cat:"Spécial",  emoji:"🧁", img:"https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=300&h=200&fit=crop", available:true},
+  {id:30, name:"Quella Mandorla",   cat:"Spécial",  emoji:"💎", img:"https://images.unsplash.com/photo-1576506295286-5cda18df43e7?w=300&h=200&fit=crop", available:true},
+  {id:31, name:"Hazelnut Turk",     cat:"Spécial",  emoji:"🌰", img:"https://images.unsplash.com/photo-1599599810769-bcde5a160d32?w=300&h=200&fit=crop", available:true},
+  {id:32, name:"Caramel",           cat:"Spécial",  emoji:"🍯", img:"https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=300&h=200&fit=crop", available:true},
+];
+
+// ===== ADMIN PASSWORD =====
+const ADMIN_PASSWORD = "02133";
+let adminLoggedIn = false;
+
+// ===== LOCAL STORAGE — save/load availability =====
+const STORAGE_KEY = "hog_flavors_v1";
+
+function saveToStorage(){
+  const state = {};
+  flavors.forEach(f => state[f.id] = f.available);
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e){}
+}
+
+function loadFromStorage(){
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return; // first time — use defaults
+    const state = JSON.parse(raw);
+    flavors.forEach(f => {
+      if(state[f.id] !== undefined) f.available = state[f.id];
+    });
+  } catch(e){}
+}
+
+// ===== ADMIN LOGIN =====
+function openAdminLogin(){
+  document.getElementById("adminPwOverlay").classList.add("show");
+  setTimeout(()=>document.getElementById("adminPwInput").focus(),300);
+}
+function closeAdminLogin(){
+  document.getElementById("adminPwOverlay").classList.remove("show");
+  document.getElementById("adminPwInput").value="";
+  document.getElementById("adminPwErr").textContent="";
+  document.getElementById("adminPwInput").classList.remove("error");
+}
+function checkAdminPw(){
+  const val = document.getElementById("adminPwInput").value;
+  const errEl = document.getElementById("adminPwErr");
+  const input = document.getElementById("adminPwInput");
+  if(val === ADMIN_PASSWORD){
+    adminLoggedIn = true;
+    closeAdminLogin();
+    document.getElementById("admin-panel").classList.add("show");
+    renderAdmin();
+    document.getElementById("admin-panel").scrollIntoView({behavior:"smooth"});
+  } else {
+    errEl.textContent = "❌ Mot de passe incorrect";
+    input.classList.add("error");
+    input.value="";
+    setTimeout(()=>input.classList.remove("error"),600);
+  }
+}
+function logoutAdmin(){
+  adminLoggedIn = false;
+  document.getElementById("admin-panel").classList.remove("show");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+// ===== GELATO CLIENT — VIEW ONLY =====
+let activeCat = "Tous";
+
+function renderCats(){
+  const cats = ["Tous",...new Set(flavors.map(f=>f.cat))];
+  document.getElementById("catRow").innerHTML = cats.map(c=>
+    `<button class="cat-btn${c===activeCat?" active":""}" onclick="setCat('${c}')">${c}</button>`
+  ).join("");
+}
+function setCat(c){ activeCat=c; renderCats(); renderGrid(); }
+
+function renderGrid(){
+  const cf = f => activeCat==="Tous" || f.cat===activeCat;
+
+  // — AVAILABLE —
+  const avail = flavors.filter(f=>f.available && cf(f));
+  const availGrid = document.getElementById("flavorGrid");
+  if(avail.length===0){
+    availGrid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:20px;color:var(--muted);font-weight:700;font-size:13px;direction:rtl;">لا توجد نكهات متاحة في هذه الفئة حالياً</div>';
+  } else {
+    availGrid.innerHTML = avail.map(f=>`
+      <div class="flavor-card" style="cursor:default;">
+        <img class="flavor-img" src="${f.img}" alt="${f.name}"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="flavor-ph" style="display:none">${f.emoji}</div>
+        <div class="flavor-body">
+          <div class="flavor-name">${f.emoji} ${f.name}</div>
+          <div class="flavor-sub">${f.cat}</div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  // — UNAVAILABLE —
+  const unavail = flavors.filter(f=>!f.available && cf(f));
+  const unavailTitle = document.getElementById("unavailTitle");
+  const unavailGrid  = document.getElementById("flavorGridUnavail");
+  if(unavail.length===0){
+    unavailTitle.style.display="none";
+    unavailGrid.style.display="none";
+  } else {
+    unavailTitle.style.display="block";
+    unavailGrid.style.display="grid";
+    unavailGrid.innerHTML = unavail.map(f=>`
+      <div class="flavor-card" style="cursor:default;">
+        <img class="flavor-img" src="${f.img}" alt="${f.name}"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="flavor-ph" style="display:none">${f.emoji}</div>
+        <div class="unavail-badge">غير متاح</div>
+        <div class="flavor-body">
+          <div class="flavor-name" style="color:#aaa;">${f.emoji} ${f.name}</div>
+          <div class="flavor-sub">${f.cat}</div>
+        </div>
+      </div>
+    `).join("");
+  }
+}
+
+// ===== ADMIN RENDER =====
+function renderAdmin(){
+  const n = flavors.filter(f=>f.available).length;
+  document.querySelector(".admin-topbar-sub").textContent =
+    `🟢 ${n} dans le frigo · ⚫ ${flavors.length-n} épuisés`;
+  document.getElementById("adminGrid").innerHTML = flavors.map(f=>`
+    <div class="admin-card${!f.available?" off":""}">
+      <span class="a-emoji">${f.emoji}</span>
+      <div class="a-info">
+        <div class="a-name">${f.name}</div>
+        <div class="a-status ${f.available?"on":"off"}">${f.available?"🟢 Dans le frigo":"⚫ Épuisé"}</div>
+      </div>
+      <button class="toggle${f.available?" on":""}" onclick="toggleAvail(${f.id})"></button>
+    </div>
+  `).join("");
+}
+
+function toggleAvail(id){
+  const f = flavors.find(f=>f.id===id);
+  if(!f) return;
+  f.available = !f.available;
+  saveToStorage();   // 💾 save immediately
+  renderAdmin();
+  renderGrid();
+  renderCats();
+}
+
+// Active nav on scroll
+window.addEventListener("scroll",()=>{
+  const sections=["hero","coupes","gelato","pizza","contact"];
+  const links=document.querySelectorAll(".nav-links a");
+  sections.forEach((id,i)=>{
+    const el=document.getElementById(id);
+    if(el){
+      const r=el.getBoundingClientRect();
+      if(r.top<=100&&r.bottom>=100){
+        links.forEach(l=>l.classList.remove("active"));
+        links[i]?.classList.add("active");
+      }
+    }
+  });
+});
+
+// ===== INIT — load saved state then render =====
+loadFromStorage();
+renderCats();
+renderGrid();
+</script>
+</body>
+</html>
