@@ -571,6 +571,49 @@ footer{background:var(--dark);color:white;text-align:center;padding:20px;font-si
 }
 </style>
 </head>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD7-opwGG19hLcWxBTNOW0FN5phwcwomVw",
+  authDomain: "house-of-gelato.firebaseapp.com",
+  projectId: "house-of-gelato",
+  storageBucket: "house-of-gelato.firebasestorage.app",
+  messagingSenderId: "779440926910",
+  appId: "1:779440926910:web:b032b5a3025c19204deeef",
+  measurementId: "G-0SSLNSPL6N"
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+console.log("Firebase connecté");
+
+async function loadFlavors() {
+
+  const querySnapshot = await getDocs(collection(db, "flavors"));
+
+  querySnapshot.forEach((doc) => {
+
+    console.log(doc.data());
+
+  });
+
+}
+
+loadFlavors();
+
+</script>
 <body>
 
 <!-- NAV -->
@@ -824,7 +867,6 @@ const flavors = [
   {id:31, name:"Hazelnut Turk",     cat:"Spécial",  emoji:"🌰", img:"https://images.unsplash.com/photo-1599599810769-bcde5a160d32?w=300&h=200&fit=crop", available:true},
   {id:32, name:"Caramel",           cat:"Spécial",  emoji:"🍯", img:"https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=300&h=200&fit=crop", available:true},
 ];
-
 // ===== ADMIN PASSWORD =====
 const ADMIN_PASSWORD = "02133";
 let adminLoggedIn = false;
