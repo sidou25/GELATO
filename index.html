@@ -388,36 +388,55 @@ const db = getFirestore(app);
 
 /* ── All gelato flavors ── */
 const ALL_FLAVORS = [
-  {id:"fraise",       name:"Fraise",         cat:"Fruits",   emoji:"🍓", available:true},
-  {id:"citron",       name:"Citron",          cat:"Fruits",   emoji:"🍋", available:true},
-  {id:"peche",        name:"Pêche",           cat:"Fruits",   emoji:"🍑", available:true},
-  {id:"raisin",       name:"Raisin",          cat:"Fruits",   emoji:"🍇", available:true},
-  {id:"mangue",       name:"Mangue",          cat:"Fruits",   emoji:"🥭", available:true},
-  {id:"cerise",       name:"Cerise",          cat:"Fruits",   emoji:"🍒", available:true},
-  {id:"ananas",       name:"Ananas",          cat:"Fruits",   emoji:"🍍", available:true},
-  {id:"melon",        name:"Melon",           cat:"Fruits",   emoji:"🍈", available:true},
-  {id:"chocolat",     name:"Chocolat",        cat:"Chocolat", emoji:"🍫", available:true},
-  {id:"choc-blanc",   name:"Chocolat Blanc",  cat:"Chocolat", emoji:"🍫", available:true},
-  {id:"nutella",      name:"Nutella",         cat:"Chocolat", emoji:"🌰", available:true},
-  {id:"ferrero",      name:"Ferrero Rocher",  cat:"Chocolat", emoji:"🌰", available:true},
-  {id:"kinder",       name:"Kinder",          cat:"Chocolat", emoji:"🍬", available:true},
-  {id:"vanille",      name:"Vanille",         cat:"Crème",    emoji:"🍦", available:true},
-  {id:"creme-brulee", name:"Crème Brûlée",    cat:"Crème",    emoji:"🍮", available:true},
-  {id:"cafe",         name:"Café",            cat:"Crème",    emoji:"☕", available:true},
-  {id:"pistache",     name:"Pistache",        cat:"Crème",    emoji:"🥜", available:true},
-  {id:"noisette",     name:"Noisette",        cat:"Crème",    emoji:"🌰", available:true},
-  {id:"coco",         name:"Coco",            cat:"Crème",    emoji:"🥥", available:true},
-  {id:"caramel",      name:"Caramel",         cat:"Crème",    emoji:"🍬", available:true},
-  {id:"tiramisu",     name:"Tiramisu",        cat:"Crème",    emoji:"🍰", available:true},
-  {id:"twix",         name:"Twix",            cat:"Spécial",  emoji:"🍭", available:true},
-  {id:"snickers",     name:"Snickers",        cat:"Spécial",  emoji:"🍭", available:true},
-  {id:"bounty",       name:"Bounty",          cat:"Spécial",  emoji:"🍭", available:true},
-  {id:"kitkat",       name:"KitKat",          cat:"Spécial",  emoji:"🍭", available:true},
-  {id:"raffaelo",     name:"Raffaelo",        cat:"Spécial",  emoji:"🍭", available:true},
-  {id:"dubai",        name:"Chocolat Dubai",  cat:"Spécial",  emoji:"✨", available:true},
-  {id:"sorbet-citron",name:"Sorbet Citron",   cat:"Sorbet",   emoji:"🍋", available:true},
-  {id:"sorbet-fraise",name:"Sorbet Fraise",   cat:"Sorbet",   emoji:"🍓", available:true},
-  {id:"sorbet-orange",name:"Sorbet Orange",   cat:"Sorbet",   emoji:"🍊", available:true},
+  {id:"fraise",       name:"Fraise",         cat:"Fruits",   emoji:"🍓", img:"https://images.pexels.com/photos/89778/strawberries-frisch-ripe-sweet-89778.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"citron",       name:"Citron",          cat:"Fruits",   emoji:"🍋", img:"https://images.pexels.com/photos/1458694/pexels-photo-1458694.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"peche",        name:"Pêche",           cat:"Fruits",   emoji:"🍑", img:"https://images.pexels.com/photos/5112562/pexels-photo-5112562.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"raisin",       name:"Raisin",          cat:"Fruits",   emoji:"🍇", img:"https://images.pexels.com/photos/708777/pexels-photo-708777.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"mangue",       name:"Mangue",          cat:"Fruits",   emoji:"🥭", img:"https://images.pexels.com/photos/918327/pexels-photo-918327.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"cerise",       name:"Cerise",          cat:"Fruits",   emoji:"🍒", img:"https://images.pexels.com/photos/109274/pexels-photo-109274.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"ananas",       name:"Ananas",          cat:"Fruits",   emoji:"🍍", img:"https://images.pexels.com/photos/947879/pexels-photo-947879.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"melon",        name:"Melon",           cat:"Fruits",   emoji:"🍈", img:"https://images.pexels.com/photos/2872755/pexels-photo-2872755.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"banana",       name:"Banana",          cat:"Fruits",   emoji:"🍌", img:"https://images.pexels.com/photos/1093038/pexels-photo-1093038.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"kiwi",         name:"Kiwi",            cat:"Fruits",   emoji:"🥝", img:"https://images.pexels.com/photos/51312/kiwi-fruit-vitamins-healthy-eating-51312.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"lampone",      name:"Lampone",         cat:"Fruits",   emoji:"🍓", img:"https://images.pexels.com/photos/321888/pexels-photo-321888.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"frutti-bosco", name:"Frutti di Bosco", cat:"Fruits",   emoji:"🫐", img:"https://images.pexels.com/photos/1426716/pexels-photo-1426716.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"mela",         name:"Mela",            cat:"Fruits",   emoji:"🍏", img:"https://images.pexels.com/photos/102104/pexels-photo-102104.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"chocolat",     name:"Chocolat",        cat:"Chocolat", emoji:"🍫", img:"https://images.pexels.com/photos/918327/pexels-photo-918327.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"choc-blanc",   name:"Chocolat Blanc",  cat:"Chocolat", emoji:"🍫", img:"https://images.pexels.com/photos/65882/chocolate-dark-coffee-confiserie-65882.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"nutella",      name:"Nutella",         cat:"Chocolat", emoji:"🌰", img:"https://images.pexels.com/photos/1120575/pexels-photo-1120575.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"ferrero",      name:"Ferrero Rocher",  cat:"Chocolat", emoji:"🌰", img:"https://images.pexels.com/photos/65882/chocolate-dark-coffee-confiserie-65882.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"kinder",       name:"Kinder",          cat:"Chocolat", emoji:"🍬", img:"https://images.pexels.com/photos/1120575/pexels-photo-1120575.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"gianduia",     name:"Gianduia",        cat:"Chocolat", emoji:"🍫", img:"https://images.pexels.com/photos/65882/chocolate-dark-coffee-confiserie-65882.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"vanille",      name:"Vanille",         cat:"Crème",    emoji:"🍦", img:"https://images.pexels.com/photos/1362534/pexels-photo-1362534.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"creme-brulee", name:"Crème Brûlée",    cat:"Crème",    emoji:"🍮", img:"https://images.pexels.com/photos/6605203/pexels-photo-6605203.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"cafe",         name:"Café",            cat:"Crème",    emoji:"☕", img:"https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"pistache",     name:"Pistache",        cat:"Crème",    emoji:"🥜", img:"https://images.pexels.com/photos/1741067/pexels-photo-1741067.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"noisette",     name:"Noisette",        cat:"Crème",    emoji:"🌰", img:"https://images.pexels.com/photos/1295572/pexels-photo-1295572.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"coco",         name:"Coco",            cat:"Crème",    emoji:"🥥", img:"https://images.pexels.com/photos/1120575/pexels-photo-1120575.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"caramel",      name:"Caramel",         cat:"Crème",    emoji:"🍬", img:"https://images.pexels.com/photos/3026804/pexels-photo-3026804.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"tiramisu",     name:"Tiramisu",        cat:"Crème",    emoji:"🍰", img:"https://images.pexels.com/photos/6880219/pexels-photo-6880219.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"fior-latte",   name:"Fior di Latte",   cat:"Crème",    emoji:"🥛", img:"https://images.pexels.com/photos/1362534/pexels-photo-1362534.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"yogurt",       name:"Yogurt",          cat:"Crème",    emoji:"🍶", img:"https://images.pexels.com/photos/1435706/pexels-photo-1435706.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"malaga",       name:"Malaga",          cat:"Crème",    emoji:"🍇", img:"https://images.pexels.com/photos/1741067/pexels-photo-1741067.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"marrone",      name:"Marrone Ghiacciato",cat:"Crème",  emoji:"🌰", img:"https://images.pexels.com/photos/1295572/pexels-photo-1295572.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"crema",        name:"Crema",           cat:"Crème",    emoji:"🍦", img:"https://images.pexels.com/photos/1362534/pexels-photo-1362534.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"panna-cotta",  name:"Panna Cotta",     cat:"Crème",    emoji:"🍮", img:"https://images.pexels.com/photos/6880219/pexels-photo-6880219.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"noce",         name:"Noce",            cat:"Crème",    emoji:"🌰", img:"https://images.pexels.com/photos/1295572/pexels-photo-1295572.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"twix",         name:"Twix",            cat:"Spécial",  emoji:"🍭", img:"https://images.pexels.com/photos/3026804/pexels-photo-3026804.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"snickers",     name:"Snickers",        cat:"Spécial",  emoji:"🍭", img:"https://images.pexels.com/photos/65882/chocolate-dark-coffee-confiserie-65882.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"bounty",       name:"Bounty",          cat:"Spécial",  emoji:"🍭", img:"https://images.pexels.com/photos/1120575/pexels-photo-1120575.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"kitkat",       name:"KitKat",          cat:"Spécial",  emoji:"🍭", img:"https://images.pexels.com/photos/65882/chocolate-dark-coffee-confiserie-65882.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"raffaelo",     name:"Raffaelo",        cat:"Spécial",  emoji:"🍭", img:"https://images.pexels.com/photos/1120575/pexels-photo-1120575.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"dubai",        name:"Chocolat Dubai",  cat:"Spécial",  emoji:"✨", img:"https://images.pexels.com/photos/3026804/pexels-photo-3026804.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"mojito",       name:"Mojito",          cat:"Spécial",  emoji:"🍹", img:"https://images.pexels.com/photos/1362534/pexels-photo-1362534.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"liquirizia",   name:"Liquirizia",      cat:"Spécial",  emoji:"🖤", img:"https://images.pexels.com/photos/65882/chocolate-dark-coffee-confiserie-65882.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"cassata",      name:"Cassata",         cat:"Spécial",  emoji:"🎂", img:"https://images.pexels.com/photos/1362534/pexels-photo-1362534.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"tartufo",      name:"Tartufo",         cat:"Spécial",  emoji:"🍫", img:"https://images.pexels.com/photos/65882/chocolate-dark-coffee-confiserie-65882.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"bacio",        name:"Bacio",           cat:"Spécial",  emoji:"🍫", img:"https://images.pexels.com/photos/65882/chocolate-dark-coffee-confiserie-65882.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"sorbet-citron",name:"Sorbet Citron",   cat:"Sorbet",   emoji:"🍋", img:"https://images.pexels.com/photos/1458694/pexels-photo-1458694.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"sorbet-fraise",name:"Sorbet Fraise",   cat:"Sorbet",   emoji:"🍓", img:"https://images.pexels.com/photos/89778/strawberries-frisch-ripe-sweet-89778.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"sorbet-orange",name:"Sorbet Orange",   cat:"Sorbet",   emoji:"🍊", img:"https://images.pexels.com/photos/327098/pexels-photo-327098.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
+  {id:"limone",       name:"Limone",          cat:"Sorbet",   emoji:"🍋", img:"https://images.pexels.com/photos/1458694/pexels-photo-1458694.jpeg?auto=compress&cs=tinysrgb&w=300&h=200&fit=crop", available:true},
 ];
 
 /* ── Auto-import: add flavors to Firestore if collection is empty ── */
@@ -427,7 +446,7 @@ async function autoImportFlavors(){
     const batch = writeBatch(db);
     ALL_FLAVORS.forEach(f=>{
       const ref = doc(db,"flavors",f.id);
-      batch.set(ref,{name:f.name,cat:f.cat,emoji:f.emoji,available:f.available});
+      batch.set(ref,{name:f.name,cat:f.cat,emoji:f.emoji,img:f.img||"",available:f.available});
     });
     await batch.commit();
     console.log("✅ Flavors imported to Firestore!");
@@ -518,7 +537,9 @@ function renderGrid(){
     ?'<div style="grid-column:1/-1;text-align:center;padding:20px;color:var(--muted);font-weight:700;font-size:13px;direction:rtl;">لا توجد نكهات متاحة في هذه الفئة حالياً</div>'
     :avail.map(f=>`
     <div class="flavor-card" style="cursor:default;">
-      <div class="flavor-ph">${f.emoji||'🍦'}</div>
+      ${f.img
+        ? `<img src="${f.img}" alt="${f.name}" style="width:100%;height:100px;object-fit:cover;display:block;" onerror="this.outerHTML='<div class=\\'flavor-ph\\'>${f.emoji||'🍦'}</div>'">`
+        : `<div class="flavor-ph">${f.emoji||'🍦'}</div>`}
       <div class="flavor-body">
         <div class="flavor-name">${f.emoji||'🍦'} ${f.name||''}</div>
         <div class="flavor-sub">${f.cat||''}</div>
@@ -529,7 +550,9 @@ function renderGrid(){
     unavailTitle.style.display="block";unavailGrid.style.display="grid";
     unavailGrid.innerHTML=unavail.map(f=>`
       <div class="flavor-card" style="cursor:default;">
-        <div class="flavor-ph" style="background:#f0f0f0">${f.emoji||'🍦'}</div>
+        ${f.img
+          ? `<img src="${f.img}" alt="${f.name}" style="width:100%;height:100px;object-fit:cover;display:block;filter:grayscale(80%);" onerror="this.outerHTML='<div class=\\'flavor-ph\\'style=\\'background:#f0f0f0\\'>${f.emoji||'🍦'}</div>'">`
+          : `<div class="flavor-ph" style="background:#f0f0f0">${f.emoji||'🍦'}</div>`}
         <div class="unavail-badge">غير متاح</div>
         <div class="flavor-body">
           <div class="flavor-name" style="color:#aaa;">${f.emoji||'🍦'} ${f.name||''}</div>
@@ -582,7 +605,10 @@ window.doChangePw=doChangePw;
 
 onSnapshot(collection(db,"flavors"),(snapshot)=>{
   flavors=[];
-  snapshot.forEach((docu)=>{flavors.push({firebaseId:docu.id,...docu.data()});});
+  snapshot.forEach((docu)=>{
+    const local = ALL_FLAVORS.find(f=>f.id===docu.id);
+    flavors.push({firebaseId:docu.id,...docu.data(), img: docu.data().img || (local&&local.img) || ""});
+  });
   renderCats();renderGrid();
   if(adminLoggedIn) renderAdmin();
 });
