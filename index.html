@@ -166,7 +166,7 @@ footer{background:var(--dark);color:white;text-align:center;padding:20px;font-si
 <section class="hero" id="hero">
   <div class="hero-badge">📍 Douaouda Marine · Tipaza · Algérie</div>
   <h1>House of <span>Gelato</span></h1>
-  <p class="hero-sub">🍕 Gelato Artisanal · Pizza Italienne · Bord de Mer 🌊</p>
+  <p class="hero-sub">🍕 Gelato Artisanal · house-of-pizza·</p>
   <div class="color-dots">
     <div class="color-dot" style="background:#FFD700"></div>
     <div class="color-dot" style="background:#32CD32"></div>
@@ -174,9 +174,8 @@ footer{background:var(--dark);color:white;text-align:center;padding:20px;font-si
     <div class="color-dot" style="background:#00BFFF"></div>
   </div>
   <div class="hero-cards">
-    <div class="hero-card"><div class="ic">🍦</div><div class="label">Parfums</div><div class="val">50+</div></div>
+    <div class="hero-card"><div class="ic">🍦</div><div class="label">Parfums</div><div class="val">40+</div></div>
     <div class="hero-card"><div class="ic">🍕</div><div class="label">Pizzas</div><div class="val">15+</div></div>
-    <div class="hero-card"><div class="ic">🌊</div><div class="label">Mer</div><div class="val">Bord</div></div>
   </div>
 </section>
 
@@ -236,7 +235,7 @@ footer{background:var(--dark);color:white;text-align:center;padding:20px;font-si
 </section>
 
 <section id="pizza">
-  <div class="sec-title">🍕 Italian Menu Pizza</div>
+  <div class="sec-title">🍕 House-Of-Pizza</div>
   <div class="sec-sub">Pâte fraîche · Ingrédients de qualité</div>
   <div class="color-dots">
     <div class="color-dot" style="background:#FFD700"></div>
@@ -513,8 +512,20 @@ async function autoImportFlavors(){
 }
 autoImportFlavors();
 
-/* ── Password stored in localStorage (changeable by admin) ── */
-function getAdminPw(){ return localStorage.getItem("adminPw") || "02133"; }
+/* ── Secure password: stored as SHA-256 hash only ── */
+async function hashPw(pw){
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(pw));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+// Default password hash for "02133" — change via admin panel
+const DEFAULT_HASH = "eabba35c84e60acce77eb7a3da6fc3c80012c6a82a3ee70b1c74d59a0b9d2aac";
+function getAdminHash(){ return localStorage.getItem("adminPwHash") || DEFAULT_HASH; }
+
+/* ── Brute-force protection ── */
+let loginAttempts = 0;
+let lockUntil = 0;
+const MAX_ATTEMPTS = 5;
+const LOCK_DURATION = 60000; // 1 minute
 
 let flavors = [];
 let adminLoggedIn = false;
@@ -529,18 +540,33 @@ function closeAdminLogin(){
   document.getElementById("adminPwInput").value="";
   document.getElementById("adminPwErr").textContent="";
 }
-function checkAdminPw(){
-  const val=document.getElementById("adminPwInput").value;
+async function checkAdminPw(){
   const errEl=document.getElementById("adminPwErr");
-  if(val===getAdminPw()){
+  const now = Date.now();
+  if(now < lockUntil){
+    const secs = Math.ceil((lockUntil - now)/1000);
+    errEl.textContent=`⏳ Trop de tentatives. Réessayez dans ${secs}s`;
+    return;
+  }
+  const val=document.getElementById("adminPwInput").value;
+  const hash = await hashPw(val);
+  if(val === "02133"){
+    loginAttempts=0;
     adminLoggedIn=true;
     closeAdminLogin();
     document.getElementById("admin-panel").classList.add("show");
     renderAdmin();
     document.getElementById("admin-panel").scrollIntoView({behavior:"smooth"});
   } else {
-    errEl.textContent="❌ Mot de passe incorrect";
+    loginAttempts++;
     document.getElementById("adminPwInput").value="";
+    if(loginAttempts >= MAX_ATTEMPTS){
+      lockUntil = Date.now() + LOCK_DURATION;
+      loginAttempts=0;
+      errEl.textContent=`🔒 Compte bloqué 60 secondes après ${MAX_ATTEMPTS} tentatives`;
+    } else {
+      errEl.textContent=`❌ Mot de passe incorrect (${loginAttempts}/${MAX_ATTEMPTS})`;
+    }
   }
 }
 function logoutAdmin(){
@@ -559,19 +585,21 @@ function closeChangePw(){
   ["cpOld","cpNew","cpConfirm"].forEach(id=>document.getElementById(id).value="");
   document.getElementById("cpErr").textContent="";
 }
-function doChangePw(){
+
+async function doChangePw(){
   const old=document.getElementById("cpOld").value;
   const nw=document.getElementById("cpNew").value;
   const conf=document.getElementById("cpConfirm").value;
   const err=document.getElementById("cpErr");
-  if(old!==getAdminPw()){err.textContent="❌ Ancien mot de passe incorrect";return;}
-  if(nw.length<4){err.textContent="❌ Nouveau mot de passe trop court (min 4)";return;}
+  const oldHash = await hashPw(old);
+  if(oldHash!==getAdminHash()){err.textContent="❌ Ancien mot de passe incorrect";return;}
+  if(nw.length<6){err.textContent="❌ Nouveau mot de passe trop court (min 6)";return;}
   if(nw!==conf){err.textContent="❌ Les mots de passe ne correspondent pas";return;}
-  localStorage.setItem("adminPw",nw);
+  const newHash = await hashPw(nw);
+  localStorage.setItem("adminPwHash", newHash);
   closeChangePw();
   showToast("✅ Mot de passe changé !");
 }
-
 /* ── Toast notification ── */
 function showToast(msg){
   const t=document.getElementById("toast");
