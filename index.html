@@ -491,24 +491,29 @@ const ALL_FLAVORS = [
 
 ]
 
-/* ── Force-reset: remplace TOUS les parfums dans Firestore ── */
-const FLAVOR_VERSION = "v8-cassis-emoji-2025"; // change this string to trigger a new reset
+/* ── Import sécurisé: ajoute uniquement les parfums MANQUANTS, sans toucher aux disponibilités ── */
+const FLAVOR_VERSION = "v8-cassis-emoji-2025";
 async function autoImportFlavors(){
-  if(localStorage.getItem("flavorVersion") === FLAVOR_VERSION) return;
-  const batch = writeBatch(db);
-  // Supprimer les anciens
+  // Lire ce qui existe déjà dans Firebase
   const snap = await getDocs(collection(db,"flavors"));
-  snap.forEach(d => batch.delete(doc(db,"flavors",d.id)));
-  await batch.commit();
-  // Importer les nouveaux
-  const batch2 = writeBatch(db);
+  const existingIds = new Set();
+  snap.forEach(d => existingIds.add(d.id));
+
+  // Ajouter uniquement les parfums qui n'existent pas encore
+  const batch = writeBatch(db);
+  let newCount = 0;
   ALL_FLAVORS.forEach(f=>{
-    const ref = doc(db,"flavors",f.id);
-    batch2.set(ref,{name:f.name,cat:f.cat,emoji:f.emoji,img:f.img||"",available:f.available});
+    if(!existingIds.has(f.id)){
+      const ref = doc(db,"flavors",f.id);
+      batch.set(ref,{name:f.name,cat:f.cat,emoji:f.emoji,img:f.img||"",available:f.available});
+      newCount++;
+    }
   });
-  await batch2.commit();
-  localStorage.setItem("flavorVersion", FLAVOR_VERSION);
-  console.log("✅ Parfums mis à jour dans Firestore !");
+  if(newCount > 0){
+    await batch.commit();
+    console.log(`✅ ${newCount} nouveaux parfums ajoutés dans Firestore`);
+  }
+  // Ne JAMAIS écraser les disponibilités existantes
 }
 autoImportFlavors();
 
