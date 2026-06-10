@@ -369,7 +369,7 @@ footer{background:var(--dark);color:white;text-align:center;padding:20px;font-si
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
-  getFirestore, collection, onSnapshot, doc, updateDoc,
+  getFirestore, collection, doc, updateDoc,
   getDocs, setDoc, writeBatch
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -667,8 +667,12 @@ function renderAdmin(){
 async function toggleAvail(firebaseId){
   const f=flavors.find(x=>x.firebaseId===firebaseId);
   if(!f) return;
-  await updateDoc(doc(db,"flavors",firebaseId),{available:!f.available});
-  showToast(f.available ? `⚫ ${f.name} marqué épuisé` : `🟢 ${f.name} disponible !`);
+  const newVal=!f.available;
+  await updateDoc(doc(db,"flavors",firebaseId),{available:newVal});
+  f.available=newVal; // mise à jour locale sans recharger depuis Firebase
+  showToast(newVal ? `🟢 ${f.name} disponible !` : `⚫ ${f.name} marqué épuisé`);
+  renderGrid();
+  renderAdmin();
 }
 
 /* ── Toggle ALL on or off ── */
@@ -676,7 +680,10 @@ async function setAllAvail(val){
   const batch=writeBatch(db);
   flavors.forEach(f=>batch.update(doc(db,"flavors",f.firebaseId),{available:val}));
   await batch.commit();
+  flavors.forEach(f=>f.available=val); // mise à jour locale
   showToast(val?"🟢 Tous les parfums sont disponibles !":"⚫ Tous les parfums sont épuisés");
+  renderGrid();
+  renderAdmin();
 }
 
 window.openAdminLogin=openAdminLogin;
@@ -690,7 +697,9 @@ window.openChangePw=openChangePw;
 window.closeChangePw=closeChangePw;
 window.doChangePw=doChangePw;
 
-onSnapshot(collection(db,"flavors"),(snapshot)=>{
+// Chargement unique — pas de mise à jour automatique
+async function loadFlavors(){
+  const snapshot = await getDocs(collection(db,"flavors"));
   flavors=[];
   snapshot.forEach((docu)=>{
     const local = ALL_FLAVORS.find(f=>f.id===docu.id);
@@ -698,7 +707,8 @@ onSnapshot(collection(db,"flavors"),(snapshot)=>{
   });
   renderCats();renderGrid();
   if(adminLoggedIn) renderAdmin();
-});
+}
+loadFlavors();
 
 window.addEventListener("scroll",()=>{
   const sections=["hero","coupes","gelato","pizza","contact"];
