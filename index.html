@@ -114,6 +114,11 @@ section{padding:50px 16px;}
 .gelato-toggle-btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(233,30,140,.45);}
 .gelato-content{display:none;}
 .gelato-content.open{display:block;}
+.scroll-hint{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:20px;position:relative;z-index:1;}
+.scroll-hint-text{font-size:12px;font-weight:800;color:rgba(255,255,255,0.85);letter-spacing:.08em;text-transform:uppercase;}
+.scroll-arrow{width:36px;height:36px;border:2.5px solid rgba(255,255,255,0.7);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;color:white;animation:bounceDown 1.5s ease-in-out infinite;}
+@keyframes bounceDown{0%,100%{transform:translateY(0);opacity:1;}50%{transform:translateY(8px);opacity:0.6;}}
+.hero-card{display:flex;flex-direction:column;align-items:center;}
 #contact{background:linear-gradient(160deg,#ea51a5,#fe52ad);position:relative;overflow:hidden;}
 #contact .sec-title{color:white;}
 #contact .sec-sub{color:rgba(255,255,255,0.85);}
@@ -181,8 +186,22 @@ footer{background:var(--dark);color:white;text-align:center;padding:20px;font-si
     <div class="color-dot" style="background:#00BFFF"></div>
   </div>
   <div class="hero-cards">
-    <div class="hero-card"><div class="ic">🍦</div><div class="label">Parfums</div><div class="val">40+</div></div>
-    <div class="hero-card"><div class="ic">🍕</div><div class="label">Pizzas</div><div class="val">15+</div></div>
+    <a href="#gelato" class="hero-card" style="text-decoration:none;cursor:pointer;">
+      <div class="ic">🍦</div>
+      <div class="label">Parfums</div>
+      <div class="val">40+</div>
+      <div style="font-size:9px;font-weight:800;color:var(--pink);margin-top:3px;">Voir les goûts ↓</div>
+    </a>
+    <a href="#pizza" class="hero-card" style="text-decoration:none;cursor:pointer;">
+      <div class="ic">🍕</div>
+      <div class="label">Pizzas</div>
+      <div class="val">17+</div>
+      <div style="font-size:9px;font-weight:800;color:var(--pink);margin-top:3px;">Voir le menu ↓</div>
+    </a>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-hint-text">Glissez pour découvrir</div>
+    <div class="scroll-arrow">↓</div>
   </div>
 </section>
 
@@ -259,31 +278,31 @@ footer{background:var(--dark);color:white;text-align:center;padding:20px;font-si
       </div>
     </a>
     <div class="menu-photos">
-      <img src="pizza-page-1.jpg" alt="Menu Pizza - page 1" loading="lazy">
-    </div>
+      <img src="pizza.jpg" alt="Menu Pizza - page 1" loading="lazy">
+     </div>
   </div>
 </section>
 
 <section id="gelato">
-  <div class="sec-title">🍦 Corner Gelato</div>
-  <div class="sec-sub">Choisissez vos parfums, récupérez au frigo !</div>
+  <div class="sec-title">🍦 Nos Parfums Gelato</div>
+  <div class="sec-sub">Glaces artisanales italiennes · Faites maison avec amour 🍓🍫🍋</div>
   <div class="gelato-toggle-wrap">
-    <button class="gelato-toggle-btn" id="gelatoToggleBtn" onclick="toggleGelato()">🍦 Voir les parfums disponibles</button>
+    <button class="gelato-toggle-btn" id="gelatoToggleBtn" onclick="toggleGelato()">
+      🍦 Voir les parfums de gelato
+    </button>
+    <div style="margin-top:10px;font-size:12px;color:var(--muted);font-weight:700;">Cliquez pour découvrir les goûts</div>
   </div>
   <div class="gelato-content" id="gelatoContent">
     <div class="gelato-info-box">
-      <div class="gelato-info-ar"></div>
-      <div class="gelato-legend">
-        <span class="legend-item"><span class="legend-dot available-dot"></span> متاح الآن</span>
-        <span class="legend-sep">·</span>
-        <span class="legend-item"><span class="legend-dot unavailable-dot"></span> غير متاح حالياً</span>
+      <div style="font-size:15px;font-weight:800;color:var(--pink);margin-bottom:8px;">✨ Parfums </div>
+      <div style="font-size:12px;color:var(--muted);font-weight:700;line-height:1.6;">
       </div>
     </div>
     <div class="cats" id="catRow"></div>
-    <div class="flavors-section-title available-title">✅ النكهات المتاحة الآن</div>
+    <div class="flavors-section-title available-title">+40 perfum</div>
     <div class="flavor-grid" id="flavorGrid"></div>
-    <div class="flavors-section-title unavailable-title" id="unavailTitle">😔 غير متاحة حالياً</div>
-    <div class="flavor-grid faded-grid" id="flavorGridUnavail"></div>
+    <div class="flavor-grid faded-grid" id="flavorGridUnavail" style="display:none;"></div>
+    <div id="unavailTitle" style="display:none;"></div>
   </div>
 </section>
 
@@ -641,21 +660,9 @@ function renderGrid(){
         <div class="flavor-sub">${f.cat||''}</div>
       </div>
     </div>`).join("");
-  if(unavail.length===0){unavailTitle.style.display="none";unavailGrid.style.display="none";}
-  else{
-    unavailTitle.style.display="block";unavailGrid.style.display="grid";
-    unavailGrid.innerHTML=unavail.map(f=>`
-      <div class="flavor-card" style="cursor:default;">
-        ${f.img
-          ? `<img src="${f.img}" alt="${f.name}" style="width:100%;height:100px;object-fit:cover;display:block;filter:grayscale(80%);" onerror="this.outerHTML='<div class=\\'flavor-ph\\'style=\\'background:#f0f0f0\\'>${f.emoji||'🍦'}</div>'">`
-          : `<div class="flavor-ph" style="background:#f0f0f0">${f.emoji||'🍦'}</div>`}
-        <div class="unavail-badge">غير متاح</div>
-        <div class="flavor-body">
-          <div class="flavor-name" style="color:#aaa;">${f.emoji||'🍦'} ${f.name||''}</div>
-          <div class="flavor-sub">${f.cat||''}</div>
-        </div>
-      </div>`).join("");
-  }
+  // Clients ne voient JAMAIS les parfums épuisés
+  unavailTitle.style.display="none";
+  unavailGrid.style.display="none";
 }
 
 /* ── Admin grid ── */
@@ -710,9 +717,25 @@ function toggleGelato(){
   const content=document.getElementById("gelatoContent");
   const btn=document.getElementById("gelatoToggleBtn");
   const isOpen=content.classList.toggle("open");
-  btn.textContent = isOpen ? "🙈 Masquer les parfums" : "🍦 Voir les parfums disponibles";
+  btn.innerHTML = isOpen
+    ? "🙈 Fermer les parfums"
+    : "🍦 Voir les parfums du jour";
 }
 window.toggleGelato=toggleGelato;
+
+// Click sur hero card Gelato → ouvrir la section et scroller
+document.querySelectorAll('a[href="#gelato"]').forEach(a=>{
+  a.addEventListener("click",function(){
+    setTimeout(()=>{
+      const content=document.getElementById("gelatoContent");
+      const btn=document.getElementById("gelatoToggleBtn");
+      if(!content.classList.contains("open")){
+        content.classList.add("open");
+        btn.innerHTML="🙈 Fermer les parfums";
+      }
+    },400);
+  });
+});
 
 // Chargement unique — pas de mise à jour automatique
 async function loadFlavors(){
